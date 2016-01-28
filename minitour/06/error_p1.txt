@@ -1,0 +1,6 @@
+Explanation:
+
+'.' throws an illegal character warning.
+'.' is not defined by the mini language.
+The lexer does not know what to make of it.
+There is not token for '.'.

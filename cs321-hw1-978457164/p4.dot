@@ -1,0 +1,7 @@
+digraph AST {
+node [shape=box style=filled fontname=Courier];
+0[label="Block" fillcolor="lightblue"];0 -> 1[label=" 0", fontcolor="gray"];
+1[label="Print\n(1, 1)" fillcolor="lightblue"];1 -> 2[label=" exp", fontcolor="gray"];
+2[label="Div\n(8, 1)" fillcolor="lemonchiffon"];2 -> 3[label=" left", fontcolor="gray"];
+3[label="IntLit(1)\n(7, 1)" fillcolor="lemonchiffon"];2 -> 4[label=" right", fontcolor="gray"];
+4[label="IntLit(0)\n(9, 1)" fillcolor="lemonchiffon"];}

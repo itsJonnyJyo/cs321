@@ -1,0 +1,2 @@
+type checking error. assigned int to boolean.
+however the int value '0' qualifies as 'false' in many languages.

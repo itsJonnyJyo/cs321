@@ -1,0 +1,44 @@
+------------------------------------------------------------------
+Name: Jonathan Jensen
+Id: 978457164
+------------------------------------------------------------------
+Part 1:
+p1 :06
+p2 :07
+p3 :07
+p4 :20
+p5 :18
+p6 :12
+p7 :05
+p8 :06
+p9 :15
+p10:07
+p11:07
+p12:18
+p13:15
+p14:05
+p15:20
+p16:18
+p17:06
+p18:07
+p19:12
+p20:12
+------------------------------------------------------------------
+Part 2:
+
+P1 caused a warning for the first time in version 06 of the mini compiler.
+P1 is as follows: "print object.method()". 
+Version 06 of the mini compiler is responsible for lexical analysis. The 
+warning encountered was an "illegal character" warning. This was because of 
+a '.' character in p1. version 06 did not know what to do with the '.' 
+because it is not a valid token in the mini programming language. The '.'
+character was able to get as far as version 06 without throwing an error or
+warning because the standard Java libraries were used to obtain the integer
+codes for input and a '.' has significant meaning in the java language. In
+addition, I don't think it would be appropriate for any versions before the
+lexer to discount "illegal characters" because, for example, the '.' 
+should be a legal character within a string if used properly.  
+------------------------------------------------------------------
+Part 3:
+
+------------------------------------------------------------------

@@ -1,0 +1,21 @@
+digraph AST {
+node [shape=box style=filled fontname=Courier];
+0[label="Block" fillcolor="lightblue"];0 -> 1;
+1[label="VarDecl" fillcolor="lightblue"];1 -> 2;
+2[label="int" fillcolor="lightblue"];1 -> 3;
+3[label="Id(\"a\")" fillcolor="lightblue"];0 -> 4;
+4[label="VarDecl" fillcolor="lightblue"];4 -> 5;
+5[label="int" fillcolor="lightblue"];4 -> 6;
+6[label="Id(\"b\")" fillcolor="lightblue"];0 -> 7;
+7[label="If" fillcolor="lightblue"];7 -> 8;
+8[label="BoolLit(false)" fillcolor="lightblue"];7 -> 9;
+9[label="Block" fillcolor="lightblue"];9 -> 10;
+10[label="Assign" fillcolor="lightblue"];10 -> 11;
+11[label="Id(\"a\")" fillcolor="lightblue"];10 -> 12;
+12[label="IntLit(1)" fillcolor="lightblue"];7 -> 13;
+13[label="Block" fillcolor="lightblue"];13 -> 14;
+14[label="Assign" fillcolor="lightblue"];14 -> 15;
+15[label="Id(\"b\")" fillcolor="lightblue"];14 -> 16;
+16[label="IntLit(1)" fillcolor="lightblue"];0 -> 17;
+17[label="Print" fillcolor="lightblue"];17 -> 18;
+18[label="Id(\"a\")" fillcolor="lightblue"];}

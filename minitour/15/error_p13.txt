@@ -1,0 +1,2 @@
+type checking error. 
+Attempt to assign boolean value to type 'int'

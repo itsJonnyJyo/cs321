@@ -1,0 +1,9 @@
+int a;
+int b;
+if (false) {
+    a = 1;
+} else {
+    b = 1;
+}
+print a;
+
