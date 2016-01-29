@@ -57,6 +57,7 @@
   System.out.println("  .keyword {color:blue}");
   System.out.println("  .comment {color:orange}");
   System.out.println("  .literal {color:green}");
+  System.out.println("  .identifier{color:green}");
   System.out.println("  .invalid {color:red}");
   System.out.println("</style>");
   System.out.println("</head>");
@@ -135,6 +136,7 @@
   void comment() { tag("comment"); }
   void literal() { tag("literal"); }
   void invalid() { tag("invalid"); }
+  void identifier() {tag("identifier"); }
 %}
 
 // Now we are ready to give regular expressions for each of the input
@@ -195,7 +197,7 @@ EndOfLineComment   = "//" {InputCharacter}* {LineTerminator}
 // sure the rule for identifiers comes after the rule for keywords to ensure
 // that keywords are colored using the earlier rule.
 
-{Identifier}    { echo(); }
+{Identifier}    { identifier(); }
 {WhiteSpace}    { echo(); }
 
 // This completes the list of all valid tokens that can appear in a mini

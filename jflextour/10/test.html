@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>My Syntax Colored Web Page</title>
+<style type="text/css">
+  body     {white-space:pre;
+            background-color:#ffffcc;
+            color:black;
+            font-family:"Lucida Console","Courier New",Monotype}
+  .keyword {color:blue}
+  .comment {color:orange}
+  .literal {color:green}
+  .identifier{color:green}
+  .invalid {color:red}
+</style>
+</head>
+<body>
+<span class="comment">// A simple test
+</span><span class="keyword">int</span> <span class="identifier">i</span>, <span class="identifier">t</span>;
+<span class="identifier">i</span> = <span class="literal">0</span>;
+<span class="identifier">t</span> = <span class="literal">0</span>;
+<span class="keyword">while</span> (<span class="identifier">i</span>&lt;<span class="literal">10</span>) {
+  <span class="identifier">i</span> = <span class="identifier">i</span> + <span class="literal">1</span>;
+  <span class="identifier">t</span> = <span class="identifier">t</span> + <span class="identifier">i</span>;
+}
+<span class="keyword">print</span> <span class="identifier">t</span>;
+</body>
+</html>
