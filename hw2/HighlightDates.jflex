@@ -51,11 +51,6 @@
   System.out.println("            background-color:#ffffcc;");
   System.out.println("            color:black;");
   System.out.println("            font-family:\"Lucida Console\",\"Courier New\",Monotype}");
-  System.out.println("  .keyword {color:blue}");
-  System.out.println("  .comment {color:orange}");
-  System.out.println("  .literal {color:green}");
-  System.out.println("  .identifier{color:green}");
-  System.out.println("  .invalid {color:red}");
   //for Dates
   System.out.println("  .date {background-color:white; color:green}");
   System.out.println("</style>");
@@ -131,11 +126,6 @@
 // quick helper methods for each of these four cases as follows:
 
 %{
-  void keyword() { tag("keyword"); }
-  void comment() { tag("comment"); }
-  void literal() { tag("literal"); }
-  void invalid() { tag("invalid"); }
-  void identifier() {tag("identifier"); }
   void date()    { tag("date"); }
 %}
 
@@ -155,6 +145,27 @@ EndOfLineComment   = "//" {InputCharacter}* {LineTerminator}
 
 //dates defined by the following rules:
 
+Date               = 
+Date_1             = {Month} {Separator} {Day} {Separator} {Year}
+
+Month              = [1-12] | 
+Month30            =
+Month31            = 
+January            = "January"   | "january"   | "Jan" | "jan" | "1"
+February           = "February"  | "february"  | "Feb" | "feb" | "2"
+March              = "March"     | "march"     | "Mar" | "mar" | "3"
+April              = "April"     | "april"     | "Apr" | "apr" | "4"
+May                = "May"       | "may"                       | "5"
+June               = "June"      | "june"      | "Jun" | "jun" | "6"
+July               = "July"      | "july"      | "Jul" | "jul" | "7"
+August             = "August"    | "august"    | "Aug" | "aug" | "8"
+September          = "September" | "september" | "Sep" | "sep" | "9"
+October            = "October"   | "october"   | "Oct" | "oct" | "10"
+November           = "November"  | "november"  | "Nov" | "nov" | "11"
+December           = "December"  | "december"  | "Dec" | "dec" | "12"
+Separator          = "/" | " " | ","
+Day                = 
+Year               =
 
 
 // All that remains now is to define some rules for matching the different
