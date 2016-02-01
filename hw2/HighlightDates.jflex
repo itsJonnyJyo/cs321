@@ -145,27 +145,38 @@ EndOfLineComment   = "//" {InputCharacter}* {LineTerminator}
 
 //dates defined by the following rules:
 
-Date               = 
-Date_1             = {Month} {Separator} {Day} {Separator} {Year}
 
-Month              = [1-12] | 
-Month30            =
-Month31            = 
-January            = "January"   | "january"   | "Jan" | "jan" | "1"
-February           = "February"  | "february"  | "Feb" | "feb" | "2"
-March              = "March"     | "march"     | "Mar" | "mar" | "3"
-April              = "April"     | "april"     | "Apr" | "apr" | "4"
-May                = "May"       | "may"                       | "5"
-June               = "June"      | "june"      | "Jun" | "jun" | "6"
-July               = "July"      | "july"      | "Jul" | "jul" | "7"
-August             = "August"    | "august"    | "Aug" | "aug" | "8"
-September          = "September" | "september" | "Sep" | "sep" | "9"
-October            = "October"   | "october"   | "Oct" | "oct" | "10"
-November           = "November"  | "november"  | "Nov" | "nov" | "11"
-December           = "December"  | "december"  | "Dec" | "dec" | "12"
+January            = "January"   | "january"   | "Jan" | "jan"
+JanNum             = "1" | "01"
+February           = "February"  | "february"  | "Feb" | "feb"
+FebNum             = "2" | "02"
+March              = "March"     | "march"     | "Mar" | "mar"
+MarNum             = "3" | "03"
+April              = "April"     | "april"     | "Apr" | "apr"
+AprNum             = "4" | "04"
+May                = "May"       | "may"                      
+MayNum             = "5" | "05"
+June               = "June"      | "june"      | "Jun" | "jun"
+JunNum             = "6" | "06"
+July               = "July"      | "july"      | "Jul" | "jul"
+JulNum             = "7" | "07"
+August             = "August"    | "august"    | "Aug" | "aug"
+AugNum             = "8" | "08"
+September          = "September" | "september" | "Sep" | "sep"
+SepNum             = "9" | "09"
+October            = "October"   | "october"   | "Oct" | "oct"
+OctNum             = "10"
+November           = "November"  | "november"  | "Nov" | "nov"
+NovNum             = "11"
+December           = "December"  | "december"  | "Dec" | "dec"
+DecNum             = "12"
 Separator          = "/" | " " | ","
-Day                = 
-Year               =
+Day30              = [1-9] | [0-2][1-9] | [1-3][0] 
+Day31              = [1-9] | [0-2][1-9] | [1-3][0] | [3][1]
+Day29              = [1-9] | [0-2][1-9]
+Year               = {YearFull} | {YearShort}
+YearFull           = [1][5-9][0-9][0-9] | [2][0-4][0-9][0-9] | [2][5][0][0]
+YearShort          = [0-9][0-9]
 
 
 // All that remains now is to define some rules for matching the different
