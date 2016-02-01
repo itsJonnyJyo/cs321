@@ -133,8 +133,6 @@
 // elements that can appear in a valid mini program.  We will use the
 // following rules to specify the syntax of dates:
 
-Identifier         = [:jletter:] [:jletterdigit:]*
-
 LineTerminator     = \r|\n|\r\n
 WhiteSpace         = {LineTerminator} | [ \t\f] 
 InputCharacter     = [^\r\n]
@@ -145,6 +143,7 @@ EndOfLineComment   = "//" {InputCharacter}* {LineTerminator}
 
 //dates defined by the following rules:
 
+// these are the components used to build a "date"
 
 January            = "January"   | "january"   | "Jan" | "jan"
 JanNum             = "1" | "01"
@@ -170,14 +169,49 @@ November           = "November"  | "november"  | "Nov" | "nov"
 NovNum             = "11"
 December           = "December"  | "december"  | "Dec" | "dec"
 DecNum             = "12"
+
 Separator          = "/" | " " | ","
+
 Day30              = [1-9] | [0-2][1-9] | [1-3][0] 
 Day31              = [1-9] | [0-2][1-9] | [1-3][0] | [3][1]
 Day29              = [1-9] | [0-2][1-9]
+
 Year               = {YearFull} | {YearShort}
 YearFull           = [1][5-9][0-9][0-9] | [2][0-4][0-9][0-9] | [2][5][0][0]
 YearShort          = [0-9][0-9]
 
+Month31            = {January} | {March} | {May} | {July} | {August} | {October} | {December}
+Month30            = {April} | {June} | {September} | {November}
+Month29            = {February}
+
+MonthNum31         = {JanNum} | {MarNum} | {MayNum} | {JulNum} | {AugNum} | {OctNum} | {DecNum}
+MonthNum30         = {AprNum} | {JunNum} | {SepNum} | {NovNum}
+MonthNum29         = {FebNum}
+
+SpaceSep           = {LineTerminator} | [ ]
+CommaSep           = {LineTerminator} | ","
+ComSpaceSep        = {SpaceSep} | {CommaSep}
+ComSpaceSep2       = {ComSpaceSep} | {ComSpaceSep} {ComSpaceSep}
+
+DateFull1          = {Month31} {SpaceSep} {Day31} {ComSpaceSep2} {YearFull}
+DateFull2          = {Month30} {SpaceSep} {Day30} {ComSpaceSep2} {YearFull}
+DateFull3          = {Month29} {SpaceSep} {Day29} {ComSpaceSep2} {YearFull}
+DateFull4          = {Day31} {SpaceSep} {Month31} {ComSpaceSep2} {YearFull}
+DateFull5          = {Day30} {SpaceSep} {Month30} {ComSpaceSep2} {YearFull}
+DateFull6          = {Day29} {SpaceSep} {Month29} {ComSpaceSep2} {YearFull}
+DateFullNum1       = {MonthNum31} "/" {Day31} "/" {Year}
+DateFullNum2       = {MonthNum30} "/" {Day30} "/" {Year}
+DateFullNum3       = {MonthNum29} "/" {Day29} "/" {Year} 
+DateShort1         = {Month31} {SpaceSep} {Day31} | {Day31} {SpaceSep} {Month31}
+DateShort2         = {Month30} {SpaceSep} {Day30} | {Day30} {SpaceSep} {Month30}
+DateShort3         = {Month29} {SpaceSep} {Day29} | {Day29} {SpaceSep} {Month29}
+DateShortNum       = {MonthNum31} "/" {Day31} | {MonthNum30} "/" {Day30} | {MonthNum29} "/" {Day29}
+
+DateFull           = {DateFull1} | {DateFull2} | {DateFull3} | {DateFull4} | {DateFull5} | {DateFull6}
+DateFullNum        = {DateFullNum1} | {DateFullNum2} | DateFullNum3}
+DateShort          = {DateShort1} | {DateShort2} | {DateShort3} | {DateShortNum}
+
+DateMaster         = {DateFull} | {DateFullNum} | {DateShort}
 
 // All that remains now is to define some rules for matching the different
 // tokens that can appear in a valid mini program with corresponding actions
@@ -186,56 +220,18 @@ YearShort          = [0-9][0-9]
 
 %%
 
-// Once again, we can adopt the definitions for mini tokens that were
-// provided in the original mini lexer.  We group the tokens here so
-// that multiple patterns can be combined into a single regular expression
-// and then share a single action.
-
-// Basic punctuation and operator symbols are echoed directly to the output
-// without any syntax coloring:
-
-","  | "["  | "]"  | "("  | ")"  | "{"  | "}" | ";" |
-"="  | "==" | ">"  | ">=" | "<"  | "<=" | "!" | "~" |
-"!=" | "&"  | "&&" | "|"  | "||" | "^"  | "*" | "+" |
-"-" | "/"       { echo(); }
 
 //Dates are match and displayed using the "date" tag:
 
-{Date}          { date(); }
-
-// Keywords are matched and displayed using "keyword" tag:
-
-"int"   | "boolean" | "while" |
-"if"    | "else"    | "print"
-                { keyword(); }
-
-// Integer literals are matched and displayed using the "literal" tag:
-
-[0-9]+          { literal(); }
-
-// Comments are matched and displayed using the "comment" tag:
-
-{Comment}       { comment(); }
-
-// Finally, identifiers and whitespace are output without any coloring
-// annotations.  We could have combined these regular expressions with each
-// other and with the rule for punctuation given previously.  However, we
-// have chosen not to do that.  One reason is that there is at least a
-// conceptual difference between these types of input elements (even if they
-// are colored in the same way).  A second reason is that we want to make
-// sure the rule for identifiers comes after the rule for keywords to ensure
-// that keywords are colored using the earlier rule.
-
-{Identifier}    { identifier(); }
-{WhiteSpace}    { echo(); }
+{DateMaster}          { date(); }
 
 // This completes the list of all valid tokens that can appear in a mini
 // program, but we will end our list of lexer rules with a catch all that
 // matches any input not already matched and aborts the program with an
 // "Invalid input" error.
 
-.|\n            { System.err.println("Invalid input");
-                  System.exit(1);
-                }
+//.|\n            { System.err.println("Invalid input");
+//                  System.exit(1);
+//                }
 
 // ---------------------------------------------------------------------
