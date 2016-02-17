@@ -59,9 +59,9 @@ Dates are also commonly written in a more compact form with
 including a year, but sometimes not.  For instance, Most people
 would consider <span class="date">10/10/10</span> to be a valid date, in addition to
 examples like <span class="date">10/10/2010</span>, <span class="date">1/1/12</span>, or even <span class="date">9/30</span>.  But few of us
-are likely to mistake 12<span class="date">3/12</span>, or even 9<span class="date">9/3</span>3 for a date because
+are likely to mistake 123/12, or even 99/33 for a date because
 some of the numbers in these examples are out of range.  Of
-course, something like <span class="date">10/10/10</span>/10 contains substrings that look
+course, something like 10/10/10/10 contains substrings that look
 like a date, but clearly should not be treated as date itself
 because it has too many parts to it.  It is also worth noting
 that single digit numbers are commonly used for the month and
@@ -80,13 +80,13 @@ should be sensitive to that.  You can assume that <span class="date">February 29
 always a valid date (i.e., you're not expected to worry about
 leap years), but April, June, September, and November only have
 30 days in them, so you would want to highlight <span class="date">June 30</span> but not
-<span class="date">June 3</span>1.  All of the other months, of course, have 31 days in
-them, so <span class="date">31 dec</span> is good, but <span class="date">January 3</span>2 and March 0 are not.
+June 31.  All of the other months, of course, have 31 days in
+them, so <span class="date">31 dec</span> is good, but January 32 and March 0 are not.
 There are different conventions in different parts of
 the world about whether the month or day number should come
 first in a date like <span class="date">6/23</span>.  We will require the US ordering
 here, which places the month first, before the day, and hence
-we will not consider 2<span class="date">3/6</span> to be a valid date.  Of course there
+we will not consider 23/6 to be a valid date.  Of course there
 are dates like <span class="date">1/7/10</span> that might be interpreted differently
 in the US (as <span class="date">January 7</span>) or the UK (as <span class="date">July 1</span>); this ambiguity
 can be a problem for readers, but our highlighting program
@@ -99,7 +99,7 @@ Thursday", or "in April" should not be considered as dates.  Nor
 should you feel any need to highlight the names of days that
 appear next to a date, as in a phrase like "Monday, <span class="date">June 3</span>"; the
 "<span class="date">June 3</span>" portion should be highlighted here, but not the
-"Monday, " section.  I'm not sure what "Bu<span class="date">nov 21</span>" or "re<span class="date">mar 6</span>"
+"Monday, " section.  I'm not sure what "Bunov 21" or "remar 6"
 might be, but it's clear that neither of them are dates, so
 neither should be marked a such (even though "<span class="date">nov 21</span>" and
 "<span class="date">mar 6</span>", which appear as substrings in these examples, are
@@ -111,10 +111,10 @@ mention, for example, that <span class="date">March 22</span> is my favorite day
 only to <span class="date">29 April</span>.  (I know that last sentence doesn't make
 sense, but it was not intended to be either true or logically
 consistent, just an example of text that mentions dates like <span class="date">22
-March</span>.)  I'll also note that I'm not a big fan of <span class="date">April 9</span>9,
+March</span>.)  I'll also note that I'm not a big fan of April 99,
 mostly because there is no such day on my calendar.  (It is true
-that people sometimes refer to periods of time such as <span class="date">July
-20</span>01, which you might interpret as a date.  However, for the
+that people sometimes refer to periods of time such as July
+2001, which you might interpret as a date.  However, for the
 purposes of this exercise, we won't consider that to be valid
 because it references a whole month, and we are only looking for
 dates that refer to a specific day.

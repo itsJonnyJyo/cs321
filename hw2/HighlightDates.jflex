@@ -45,7 +45,7 @@
 %init{
   System.out.println("<html>");
   System.out.println("<head>");
-  System.out.println("<title>My Syntax Colored Web Page</title>");
+  System.out.println("<title>Highlight Dates Web Page</title>");
   System.out.println("<style type=\"text/css\">");
   System.out.println("  body     {white-space:pre;");
   System.out.println("            background-color:#ffffcc;");
@@ -121,30 +121,18 @@
 %}
 
 // The parameter cl is used to specify a particular token class/style;
-// given the opening lines of HTML shown above, this should be one of
-// "keyword", "comment", "literal", or "invalid".  We can define some
-// quick helper methods for each of these four cases as follows:
+// given the opening lines of HTML shown above, this should be a valid date.
 
 %{
   void date()    { tag("date"); }
 %}
 
-// Now we are ready to give regular expressions for each of the input
-// elements that can appear in a valid mini program.  We will use the
-// following rules to specify the syntax of dates:
+//  We will use the following definitions to specify the syntax of dates:
 
-LineTerminator     = \r|\n|\r\n
-WhiteSpace         = {LineTerminator} | [ \t\f] 
-InputCharacter     = [^\r\n]
 
-Comment            = {TraditionalComment} | {EndOfLineComment}
-TraditionalComment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
-EndOfLineComment   = "//" {InputCharacter}* {LineTerminator}
+// these are the LOW LEVEL building blocks of a date
 
-//dates defined by the following rules:
-
-// these are the components used to build a "date"
-
+//accepted month formats
 January            = "January"   | "january"   | "Jan" | "jan"
 JanNum             = "1" | "01"
 February           = "February"  | "february"  | "Feb" | "feb"
@@ -170,16 +158,19 @@ NovNum             = "11"
 December           = "December"  | "december"  | "Dec" | "dec"
 DecNum             = "12"
 
-Separator          = "/" | " " | ","
-
+//accepted days
 Day30              = [1-9] | [0-2][1-9] | [1-3][0] 
 Day31              = [1-9] | [0-2][1-9] | [1-3][0] | [3][1]
 Day29              = [1-9] | [0-2][1-9]
 
+//accepted year formats between 1500 and 2500
 Year               = {YearFull} | {YearShort}
 YearFull           = [1][5-9][0-9][0-9] | [2][0-4][0-9][0-9] | [2][5][0][0]
 YearShort          = [0-9][0-9]
 
+//HIGHER LEVEL BUILDING BLOCKS
+
+//the previously defined "months", organized by number of days in the month
 Month31            = {January} | {March} | {May} | {July} | {August} | {October} | {December}
 Month30            = {April} | {June} | {September} | {November}
 Month29            = {February}
@@ -188,30 +179,52 @@ MonthNum31         = {JanNum} | {MarNum} | {MayNum} | {JulNum} | {AugNum} | {Oct
 MonthNum30         = {AprNum} | {JunNum} | {SepNum} | {NovNum}
 MonthNum29         = {FebNum}
 
+//Macros for some whitespace and/or separators that will be used
+//in between components of a valid date.
+LineTerminator     = \r|\n|\r\n
 SpaceSep           = {LineTerminator} | [ ]
 CommaSep           = {LineTerminator} | ","
 ComSpaceSep        = {SpaceSep} | {CommaSep}
 ComSpaceSep2       = {ComSpaceSep} | {ComSpaceSep} {ComSpaceSep}
 
+//EVEN HIGHER LEVEL
+//accepted date formats
+
+//ie. "Month Day, Year"
 DateFull1          = {Month31} {SpaceSep} {Day31} {ComSpaceSep2} {YearFull}
 DateFull2          = {Month30} {SpaceSep} {Day30} {ComSpaceSep2} {YearFull}
 DateFull3          = {Month29} {SpaceSep} {Day29} {ComSpaceSep2} {YearFull}
+
+//ie. "Day Month, Year"
 DateFull4          = {Day31} {SpaceSep} {Month31} {ComSpaceSep2} {YearFull}
 DateFull5          = {Day30} {SpaceSep} {Month30} {ComSpaceSep2} {YearFull}
 DateFull6          = {Day29} {SpaceSep} {Month29} {ComSpaceSep2} {YearFull}
+
+//ie. "XX/XX/XX" or "XX/XX/XXX"
 DateFullNum1       = {MonthNum31} "/" {Day31} "/" {Year}
 DateFullNum2       = {MonthNum30} "/" {Day30} "/" {Year}
-DateFullNum3       = {MonthNum29} "/" {Day29} "/" {Year} 
+DateFullNum3       = {MonthNum29} "/" {Day29} "/" {Year}
+
+//ie. "Month Day" or "Day Month" 
 DateShort1         = {Month31} {SpaceSep} {Day31} | {Day31} {SpaceSep} {Month31}
 DateShort2         = {Month30} {SpaceSep} {Day30} | {Day30} {SpaceSep} {Month30}
 DateShort3         = {Month29} {SpaceSep} {Day29} | {Day29} {SpaceSep} {Month29}
+
+//ie. "XX/XX"
 DateShortNum       = {MonthNum31} "/" {Day31} | {MonthNum30} "/" {Day30} | {MonthNum29} "/" {Day29}
 
+//groups of the accepted date formats
 DateFull           = {DateFull1} | {DateFull2} | {DateFull3} | {DateFull4} | {DateFull5} | {DateFull6}
-DateFullNum        = {DateFullNum1} | {DateFullNum2} | DateFullNum3}
+DateFullNum        = {DateFullNum1} | {DateFullNum2} | {DateFullNum3}
 DateShort          = {DateShort1} | {DateShort2} | {DateShort3} | {DateShortNum}
 
+//HIGHEST LEVEL 
 DateMaster         = {DateFull} | {DateFullNum} | {DateShort}
+
+//"BadDate" will match dates with extra "stuff" before or after them
+// ie. no part of 10/10/10/10 should be highlighted even though "DateMaster" partially matches it.
+
+BadDate            = [a-zA-Z0-9/]* {DateMaster} [a-zA-Z0-9/]*
 
 // All that remains now is to define some rules for matching the different
 // tokens that can appear in a valid mini program with corresponding actions
@@ -221,17 +234,11 @@ DateMaster         = {DateFull} | {DateFullNum} | {DateShort}
 %%
 
 
-//Dates are match and displayed using the "date" tag:
+//Dates are matched and displayed using the "date" tag:
 
 {DateMaster}          { date(); }
 
-// This completes the list of all valid tokens that can appear in a mini
-// program, but we will end our list of lexer rules with a catch all that
-// matches any input not already matched and aborts the program with an
-// "Invalid input" error.
-
-//.|\n            { System.err.println("Invalid input");
-//                  System.exit(1);
-//                }
+//longest lexeme rule ensures that badDates will be echo'd, not highlighted.
+{BadDate}             { echo(); }
 
 // ---------------------------------------------------------------------

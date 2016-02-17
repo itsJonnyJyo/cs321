@@ -1,0 +1,48 @@
+/* Jonathan Jensen
+** Assignment 3 Task 2
+** Syntax Checker
+*/
+
+PARSER_BEGIN(ASTGen)
+
+public class ASTGen {
+    public static void main (String args[]) throws ParseException {
+        new ASTGen(System.in); // Read from standard input
+        Top();
+        System.out.println("Input syntax is valid");
+    }
+}
+
+PARSER_END(ASTGen)
+
+// -- Define the grammatical rules of the input language: -----
+
+void Top()           : { } { (MasterClass())* <EOF> }
+void MasterClass()   : { } { Class() | AbstrClass() }
+void Class()         : { } { "class" Id() [MasterArg()] }
+void AbstrClass()    : { } { "abstract" "class" Id()[AbstrArg()] }
+void MasterArg()     : { } { ParenArg() [CurlyArg()] }
+void AbstrArg()      : { } { [ ParenArg() ] CurlyArg()  }
+void ParenArg()      : { } { "(" Arg() ("," Arg())* ")" }
+void CurlyArg()      : { } { "{" (Class() | AbstrClass() )* "}"}
+void Arg()           : { } { [ProtectLvl()] Type() Id() }
+void Type()          : { } { Id() ( "." Id())* ("[" "]")* }
+void ProtectLvl()    : { } { "private" | "public" | "protected" }
+void Id()            : { } { <IDENT> }
+
+//Input elements that should be ignored/skipped:
+SKIP : {
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+| <"/*" (~["*"])* ("*" | ~["*","/"] (~["*"])* "*")* "/">
+}
+
+// Lexemes that should be reported as valid tokens:
+TOKEN : {
+  <IDENT:   <LETTER> (<LETTER> | <DIGIT>)*> 
+| <#LETTER: ["A"-"Z","a"-"z","_"]>
+| <#DIGIT:  ["0"-"9"]>
+}
