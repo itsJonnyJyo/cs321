@@ -1,0 +1,130 @@
+
+
+
+abstract class Expr(protected Position pos) {
+    class ArrayAccess(protected Expr arr, protected Expr idx) {
+        class ArrayAssign(private Expr rhs)
+    }
+    
+    class Assign(private Id lhs, private Expr rhs)
+    
+    abstract class BinExpr(protected Expr left, protected Expr right) {
+        abstract class BinArithExpr {
+            class Add
+            class Div
+            class Mul
+            class Sub
+        }
+        
+        abstract class BinBitwiseExpr {
+            class BAnd
+            class BOr
+            class BXor
+        }
+        
+        abstract class BinCompExpr {
+            class Gt
+            class Gte
+            class Lt
+            class Lte
+        }
+        
+        abstract class BinEqualityExpr {
+            class Eql
+            class Neq
+        }
+        
+        abstract class BinLogicExpr {
+            class LAnd
+            class LOr
+        }
+    }
+    
+    class BoolLit(private boolean value)
+    
+    abstract class UnExpr(protected Expr exp) {
+        abstract class UnArithExpr {
+            class UMinus
+            class Uplus
+        }
+        
+        class BNot
+        class LNot
+    }
+    
+    class Id(String name)
+    class IntLit(private int num)
+    class NewArray(private Type type, private Expr size)
+}
+
+class DotEnvOutput(protected java.io.PrintStream out)
+    // DotEnvOutput needs a second constructor with a 'String' argument
+class DotOutput(protected java.io.PrintStream out)
+    // class DotOutput has a second constructor which requires a 'String' argument
+class Env(private Id id, private Type type, private Env rest)
+class IdList(Id head, IdList rest)
+class IndentOutput(private java.io.PrintStream out)
+
+abstract class Stmt {
+    class Block
+    abstract class InitStmt {
+        abstract class StepStmt {
+            class Empty
+            class ExprStmt(private Expr expr)
+        }
+        
+        class VarDecl(private Type type, private VarIntro[] intros, private int used)
+    }
+    
+    abstract class PosStmt(protected Position pos) {
+        class For(InitStmt first, StepStmt test, StepStmt step, Stmt body)
+        class If(private Expr test, private Stmt ifTrue, private Stmt ifFalse)
+        class Print(private Expr exp)
+        class While(private Expr test, private Stmt body)
+    }
+}
+
+class TestDot
+class TestDotEnv
+class TestHTML
+class TestIndent
+class TestInit
+class TestScoping
+class TestText
+class TestTyping
+
+class TextOutput(protected java.io.PrintStream out) {
+    class HTMLOutput
+}
+
+abstract class Type() {
+    class ArrayType(private Type elem)
+    class PrimType(private String typename)
+}
+
+class VarIntro(protected Id id) {
+    class InitVarIntro(private Expr expr)
+}
+
+class VarSet(private Env head, private VarSet rest)
+
+class InitAnalysis(Handler handler) //extends Phase
+    // 'handler' is inherited from 'Phase'
+
+class ScopeAnalysis(Handler handler) //extends Phase
+    // 'handler' is inherited from 'Phase'
+    
+
+class TypeAnalysis(Handler handler) //extends Phase
+    // 'handler' is inherited from 'Phase'
+
+
+
+
+
+
+
+
+
+
+

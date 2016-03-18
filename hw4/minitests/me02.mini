@@ -1,0 +1,3 @@
+int[] hello;
+hello = new int[5];
+hello[1];
